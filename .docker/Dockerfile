@@ -22,3 +22,6 @@ COPY ./php/php.ini /usr/local/etc/php/conf.d/php.ini
 COPY ./entrypoints/entrypoint.sh /var/tmp/entrypoint.sh
 
 WORKDIR /var/www
+
+RUN composer install
+RUN npm install

@@ -33,20 +33,18 @@ services:
       - 9000
     networks:
       - app-network
-  # app-node:
-  #   build:
-  #     context: .
-  #     dockerfile: .docker/node.Dockerfile
-  #   command: npm run dev
-  #   environment:
-  #     - APP_URL=localhost:9000
-  #   volumes:
-  #     - ./ticket-app:/var/www/
-  #   container_name: app-node
-  #   expose:
-  #     - 5173
-  #   networks:
-  #     - app-network
+  app-node:
+    build:
+      context: .
+      dockerfile: .docker/node.Dockerfile
+    command: npm run build --watch
+    environment:
+      - APP_URL=localhost:9000
+    volumes:
+      - ./ticket-app:/var/www/
+    container_name: app-node
+    networks:
+      - app-network
   db:
     image: postgres:15.3
     restart: always
