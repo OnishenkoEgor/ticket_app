@@ -12,12 +12,14 @@ export default defineConfig({
             ],
         }),
     ],
-    server:{
-        watch: {
-            usePolling: true,
+    server: {
+        host: "0.0.0.0",
+        hmr: {
+          clientPort: "80",
         },
-        host: true,
-        strictPort: true,
-        port: 8080
-    }
+        port: "3000",
+        watch: {
+          usePolling: true,
+        },
+      },
 });
