@@ -1,9 +1,11 @@
 <template>
-    <el-footer>footer </el-footer>
+    <el-footer>footer</el-footer>
 </template>
 
 <script>
-export default {};
+export default {
+    name: "Footer"
+};
 </script>
 
 <style></style>

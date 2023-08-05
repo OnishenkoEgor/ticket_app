@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 interface DaoInterface
 {
+    //Basic CRUD interface
     public function get(int $id): Model;
 
     public function create(AbstractDto $dto): void;

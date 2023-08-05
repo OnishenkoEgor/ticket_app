@@ -1,6 +1,6 @@
-import { createApp } from "vue";
+import {createApp} from "vue";
 import ElementPlus from "element-plus";
-import { createRouter, createWebHistory } from "vue-router";
+import {createRouter, createWebHistory} from "vue-router";
 
 import "element-plus/dist/index.css";
 import "element-plus/theme-chalk/dark/css-vars.css";
@@ -8,10 +8,12 @@ import "element-plus/theme-chalk/dark/css-vars.css";
 import App from "./App.vue";
 import Main from "./pages/Main.vue";
 import AboutUs from "./pages/AboutUs.vue";
+import Login from "./pages/Login.vue";
 
 const routes = [
-    { path: "/", component: Main },
-    { path: "/about-us", component: AboutUs },
+    {path: "/", component: Main},
+    {path: "/about-us", component: AboutUs},
+    {path: '/login', component: Login}
 ];
 
 const router = createRouter({

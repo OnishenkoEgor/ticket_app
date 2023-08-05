@@ -1,8 +1,6 @@
 <template>
     <div class="">
-        <el-link type="primary">
-            <router-link slot-scope="default" to="/about-us">About</router-link>
-        </el-link>
+        <h1>its page main</h1>
     </div>
 </template>
 

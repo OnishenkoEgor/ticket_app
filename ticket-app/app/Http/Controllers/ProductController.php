@@ -21,6 +21,22 @@ class ProductController extends Controller
                 'errors' => $exception->getMessage()
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
+        return Response::json([
+            'errors' => false,
+        ], Response::HTTP_OK);
+    }
 
+    public function create(): JsonResponse
+    {
+        try {
+
+        } catch (\Throwable $exception) {
+            return Response::json([
+                'errors' => $exception->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+        return Response::json([
+            'errors' => false,
+        ], Response::HTTP_OK);
     }
 }
