@@ -2,8 +2,8 @@
 
 namespace App\Dao;
 
-use App\Dto\AbstractDto;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\DataTransferObject\DataTransferObject;
 
 class CategoryDao implements DaoInterface
 {
@@ -12,12 +12,12 @@ class CategoryDao implements DaoInterface
         // TODO: Implement get() method.
     }
 
-    public function create(AbstractDto $dto): void
+    public function create(DataTransferObject $dto): void
     {
         // TODO: Implement create() method.
     }
 
-    public function update(AbstractDto $dto): Model
+    public function update(DataTransferObject $dto): Model
     {
         // TODO: Implement update() method.
     }

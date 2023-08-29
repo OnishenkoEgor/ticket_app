@@ -36,8 +36,8 @@ export default {
         return {
             menuItems: [
                 {
-                    title: 'first',
-                    link: 'main',
+                    title: 'Users',
+                    link: 'users',
                     subMenuItems: []
                 },
                 {

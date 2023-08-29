@@ -51,12 +51,22 @@ services:
     image: postgres:15.3
     restart: always
     environment:
-      POSTGRES_PASSWORD: test
+      POSTGRES_PASSWORD: admin
       POSTGRES_USER: admin
       POSTGRES_DB: app
     expose:
       - 5432
+    ports:
+      - "5432:5432"
     container_name: db
+    networks:
+      - app-network
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: mailpit
+    ports:
+      - "1025:1025"
+      - "8025:8025"
     networks:
       - app-network
 

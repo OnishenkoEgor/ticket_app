@@ -16,9 +16,6 @@ return new class extends Migration
             $table->string('name');
             $table->double('price');
             $table->string('description');
-            $table->foreign('category_id')
-                ->references('id')
-                ->on('category');
             $table->bigInteger('views');
             $table->timestamps();
         });

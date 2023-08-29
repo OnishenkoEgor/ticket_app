@@ -1,12 +1,12 @@
+<template>
+    <h1>It's Login page</h1>
+</template>
 <script>
 export default {
-    name: "AuthModal"
+    name: "Main"
 }
 </script>
 
-<template>
-
-</template>
 
 <style scoped lang="scss">
 
