@@ -37,13 +37,14 @@ services:
     build:
       context: .
       dockerfile: .docker/node.Dockerfile
-    command: npm run dev
     environment:
       - APP_URL=localhost:9000
     ports:
       - "80:3000"
     volumes:
       - ./ticket-app:/var/www/
+      - ./entrypoints/node-entrypoint.sh:/var/tmp/node-entrypoint.sh:ro
+    entrypoint: /var/tmp/node-entrypoint.sh
     container_name: app-node
     networks:
       - app-network

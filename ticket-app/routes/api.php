@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,10 +15,12 @@ use App\Http\Controllers\LoginController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::controller(LoginController::class)->group(function () {
+    Route::post('/login', [LoginController::class, 'login']);
+    Route::get('/logout', [LoginController::class, 'logout']);
+    Route::get('/current-user', [LoginController::class, 'getUser']);
 });
 
-Route::controller(LoginController::class)->group(function () {
-    Route::post('/login', [LoginController::class, 'authenticate']);
-});
+Route::controller(UserController::class)->group(function () {
+    Route::get('/', [UserController::class, 'getAll']);
+})->middleware('auth:sanctum');

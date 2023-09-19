@@ -18,6 +18,16 @@ export default {
         Footer
     },
     created() {
+        //todo refactor to store
+        console.log(this.$store.state);
+        if (!this.$store.state.user) {
+            axios.get('/api/current-user').then(({data: {user}}) => {
+                this.$store.commit({
+                    type: 'setUserName',
+                    user
+                })
+            })
+        }
     }
 }
 </script>
