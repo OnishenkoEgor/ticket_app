@@ -10,32 +10,50 @@
     </el-form>
 </template>
 <script>
+import auth from '../api/auth.js';
+
 export default {
     name: "AuthForm",
+    props: {
+        successCb: {
+            type: Function,
+            required: false,
+            default: () => {
+            }
+        },
+        failCb: {
+            type: Function,
+            required: false,
+            default: () => {
+            }
+        }
+    },
     data() {
         return {
-            email: '',
-            password: ''
+            email: 'test@test.test',
+            password: 'test'
         }
     },
     methods: {
         login() {
-            axios.post('api/login', {
+            auth.login({
                 email: this.email,
                 password: this.password
             }).then(() => {
                 this.$message({
                     type: "success",
-                    message: "Login success."
+                    message: "Login success.",
+                    onClose: this.successCb()
                 });
             }).catch(({response: {data: {message}}}) => {
                 this.$message({
                     type: 'error',
-                    message: message ?? 'Error on login.'
+                    message: message ?? 'Error on login.',
+                    onClose: this.failCb
                 });
             });
         }
-    }
+    },
 }
 </script>
 <style scoped lang="scss">

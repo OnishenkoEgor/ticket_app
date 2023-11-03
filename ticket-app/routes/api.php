@@ -22,5 +22,9 @@ Route::controller(LoginController::class)->group(function () {
 });
 
 Route::controller(UserController::class)->group(function () {
-    Route::get('/', [UserController::class, 'getAll']);
+    Route::get('/users', [UserController::class, 'getAll'])->name('index');
+    Route::get('/users/{id}', [UserController::class, 'get'])->name('get');
+    Route::post('/users', [UserController::class, 'create'])->name('create');
+    Route::put('/users/{id}', [UserController::class, 'update'])->name('update');
+    Route::delete('/users/{id}', [UserController::class, 'delete'])->name('delete');
 })->middleware('auth:sanctum');

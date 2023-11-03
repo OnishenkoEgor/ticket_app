@@ -1,12 +1,12 @@
 <template>
+    <el-form>
 
+    </el-form>
 </template>
 <script>
-export default {
-    name: "Users",
-    created() {
 
-    }
+export default {
+    name: "UserForm"
 }
 </script>
 

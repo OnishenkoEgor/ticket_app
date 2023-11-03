@@ -6,6 +6,7 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libzip-dev \
     zip unzip \
+    librdkafka-dev \
     nodejs \
     npm \
     git && \
@@ -17,6 +18,9 @@ RUN apt-get update && apt-get install -y \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN pecl install rdkafka && \
+    docker-php-ext-enable rdkafka
+
 COPY ./ticket-app /var/www
 COPY ./php/php.ini /usr/local/etc/php/conf.d/php.ini
 COPY ./entrypoints/entrypoint.sh /var/tmp/entrypoint.sh
