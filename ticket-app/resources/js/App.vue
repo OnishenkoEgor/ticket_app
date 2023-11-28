@@ -2,7 +2,6 @@
     <el-container>
         <Aside/>
         <el-main>
-            <Header/>
             <router-view></router-view>
         </el-main>
     </el-container>
@@ -19,14 +18,14 @@ export default {
         Aside
     },
     methods: {
-        ...mapActions([
-            'init'
-        ])
+        ...mapActions({
+            init: 'auth/init'
+        })
     },
     computed: {
-        ...mapGetters([
-            'isAuthenticated'
-        ])
+        ...mapGetters({
+            isAuthenticated: 'auth/isAuthenticated'
+        })
     },
     created() {
         if (!this.isAuthenticated) {

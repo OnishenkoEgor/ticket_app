@@ -16,6 +16,12 @@ async function get(id) {
     return parseResponse(axios.get(`/api/users/${id}`));
 }
 
+async function getUserName(id) {
+    let res = await parseResponse(axios.get(`/api/users/${id}`));
+    console.log(res?.data?.name);
+    return res?.data?.name ?? '';
+}
+
 async function getAll() {
     return parseResponse(axios.get('/api/users'));
 }
@@ -25,5 +31,6 @@ export default {
     create,
     get,
     update,
-    remove
+    remove,
+    getUserName
 }

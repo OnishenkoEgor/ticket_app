@@ -27,7 +27,7 @@ export default {
                 }
             });
         },
-        ...mapActions(['init'])
+        ...mapActions({init: 'auth/init'})
     }
 }
 </script>

@@ -1,5 +1,4 @@
 <template>
-    <Breadcrumbs/>
     <h1 v-if="pageTitle">{{ pageTitle }}</h1>
 </template>
 

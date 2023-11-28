@@ -1,11 +1,13 @@
 <template>
     <el-aside>
         <el-menu
+            ref="menu"
             :router="true"
             :ellipsis="false"
+            :default-active="defaultActive"
             style="min-height: 100vh"
         >
-            <el-sub-menu v-if="user" :teleported="true" index="login" class="app-header__logo">
+            <el-sub-menu v-if="user" :teleported="true" index="0" class="app-header__logo">
                 <template #title>
                     <span class=""> {{ user.name }} </span>
                 </template>
@@ -13,18 +15,19 @@
                     Logout
                 </el-menu-item>
             </el-sub-menu>
-            <el-menu-item index="9-9" v-else route="login">
+            <el-menu-item index="0" v-else route="login" ref="login">
                 Login
             </el-menu-item>
             <template v-for="(menuItem,index) in menuItems">
-                <el-menu-item v-if="!menuItem.subMenuItems.length" :index="`${index}`" :route="menuItem.link">
+                <el-menu-item v-if="!menuItem.subMenuItems.length" :index="`${++index}`"
+                              :route="$router.resolve({name: menuItem.link}).fullPath">
                     {{ menuItem.title }}
                 </el-menu-item>
                 <el-sub-menu v-else :index="`${index}`">
                     <template #title>{{ menuItem.title }}</template>
                     <el-menu-item v-for="(subMenuItem,subMenuIndex) in menuItem.subMenuItems"
                                   :index="`${index}-${subMenuIndex}`"
-                                  :route="subMenuItem.link"
+                                  :route="$router.resolve({name: subMenuItem.link}).fullPath"
                     >
                         {{ subMenuItem.title }}
                     </el-menu-item>
@@ -44,31 +47,18 @@ export default {
             menuItems: [
                 {
                     title: 'Main',
-                    link: '/',
+                    link: 'main',
                     subMenuItems: []
                 },
                 {
                     title: 'Users',
-                    link: '/users',
+                    link: 'users',
                     subMenuItems: []
                 },
                 {
-                    title: 'second',
-                    link: '',
-                    subMenuItems: [
-                        {
-                            title: 'second-1',
-                            link: '/second-1'
-                        },
-                        {
-                            title: 'second-2',
-                            link: '/second-2'
-                        },
-                        {
-                            title: 'second-3',
-                            link: '/second-3'
-                        }
-                    ]
+                    title: 'Tickets',
+                    link: 'tickets',
+                    subMenuItems: []
                 }
             ]
         }
@@ -85,10 +75,26 @@ export default {
                 }
             });
         },
-        ...mapActions(['init'])
+        ...mapActions({init: 'auth/init'})
     },
     computed: {
-        ...mapGetters({user: 'getUser'})
+        defaultActive() {
+            if (this.$route.name === 'login') {
+                return String(0);
+            }
+
+            let index = this.menuItems.findIndex(item => {
+                return item.link === this.$route.name
+            });
+
+            return index === -1 ? '' : String(++index);
+        },
+        ...mapGetters({user: 'auth/getUser'})
+    },
+    watch: {
+        '$route'(to, from) {
+            //TODO update active menu item after redirect in navigation guard
+        }
     }
 }
 </script>

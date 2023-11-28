@@ -8,26 +8,22 @@ const router = createRouter({
     routes,
 });
 
-router.beforeEach(async (to, from, next) => {
-    if (!store.getters.isInitialized) {
+router.beforeEach(async (to, from) => {
+    if (!store.getters['auth/isInitialized']) {
         const loading = ElLoading.service({
             lock: true,
             text: 'Loading...',
             background: 'rgba(255,255,255, 1)',
         });
-        await store.dispatch('init').then(() => {
-            if (to.meta.requiresAuth && !store.getters.isAuthenticated) {
-                next({name: 'login', query: {to: to.fullPath}, replace: true});
-            } else {
-                next();
-            }
+        await store.dispatch('auth/init').then(() => {
             loading.close();
+            if (to.meta.requiresAuth && !store.getters['auth/isAuthenticated']) {
+                return {name: 'login', query: {to: to.fullPath}};
+            }
         })
     } else {
-        if (to.meta.requiresAuth && !store.getters.isAuthenticated) {
-            next({name: 'login', query: {to: to.fullPath}, replace: true});
-        } else {
-            next();
+        if (to.meta.requiresAuth && !store.getters['auth/isAuthenticated']) {
+            return {name: 'login', query: {to: to.fullPath}};
         }
     }
 })

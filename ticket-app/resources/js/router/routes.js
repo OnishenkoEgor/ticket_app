@@ -1,9 +1,10 @@
 import Main from "../pages/Main.vue";
 import Users from "../pages/user/Users.vue";
-import AboutUs from "../pages/AboutUs.vue";
 import Login from "../pages/Login.vue";
 import UserForm from "../pages/user/UserForm.vue";
 import UserCard from "../pages/user/UserCard.vue";
+import Tickets from "../pages/ticket/Tickets.vue";
+import userApi from '../api/user.js'
 
 const routes = [
     {
@@ -11,55 +12,60 @@ const routes = [
         name: 'main',
         component: Main,
         meta: {
-            pageTitle: 'Main'
-        }
-    },
-    {
-        path: "/users",
-        name: 'users',
-        component: Users,
-        meta: {
-            requiresAuth: true,
-            pageTitle: 'Users'
+            pageTitle: 'Home',
         },
         children: [
             {
-                path: ":id",
-                name: 'users.get',
-                component: UserCard,
+                path: "/users",
+                name: 'users',
+                component: Users,
                 meta: {
                     requiresAuth: true,
-                    pageTitle: ''
+                    pageTitle: 'Users'
                 },
+                children: [
+                    {
+                        path: ":id/show",
+                        name: 'users.get',
+                        component: UserCard,
+                        meta: {
+                            pageTitleCb:userApi.getUserName
+                        }
+                    },
+                    {
+                        path: "create",
+                        name: 'users.create',
+                        component: UserForm,
+                        meta: {
+                            pageTitle: 'Create user'
+                        },
+                    },
+                    {
+                        path: ":id/edit",
+                        name: 'users.update',
+                        component: UserForm,
+                        meta: {
+                            pageTitleCb: userApi.getUserName
+                        }
+                    }
+                ]
             },
             {
-                path: "create",
-                name: 'users.create',
-                component: UserForm,
+                path: '/tickets',
+                name: 'tickets',
+                component: Tickets,
                 meta: {
-                    requiresAuth: true
-                },
+                    pageTitle: 'Tickets'
+                }
             },
             {
-                path: "update",
-                name: 'users.update',
-                component: UserForm,
-                meta: {
-                    requiresAuth: true
-                },
+                path: '/login',
+                name: 'login',
+                component: Login,
             }
         ]
     },
-    {
-        path: "/about-us",
-        name: 'about-us',
-        component: AboutUs
-    },
-    {
-        path: '/login',
-        name: 'login',
-        component: Login,
-    }
+
 ];
 export {
     routes
