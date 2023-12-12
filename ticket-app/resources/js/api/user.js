@@ -18,7 +18,7 @@ async function get(id) {
 
 async function getUserName(id) {
     let res = await parseResponse(axios.get(`/api/users/${id}`));
-    console.log(res?.data?.name);
+
     return res?.data?.name ?? '';
 }
 

@@ -5,6 +5,7 @@ import UserForm from "../pages/user/UserForm.vue";
 import UserCard from "../pages/user/UserCard.vue";
 import Tickets from "../pages/ticket/Tickets.vue";
 import userApi from '../api/user.js'
+import Destinations from "../pages/destinations/Destinations.vue";
 
 const routes = [
     {
@@ -29,7 +30,7 @@ const routes = [
                         name: 'users.get',
                         component: UserCard,
                         meta: {
-                            pageTitleCb:userApi.getUserName
+                            pageTitleCb: userApi.getUserName
                         }
                     },
                     {
@@ -59,9 +60,20 @@ const routes = [
                 }
             },
             {
+                path: '/destinations',
+                name: 'destinations',
+                component: Destinations,
+                meta: {
+                    pageTitle: 'Destinations'
+                }
+            },
+            {
                 path: '/login',
                 name: 'login',
                 component: Login,
+                meta: {
+                    pageTitle: 'Login'
+                }
             }
         ]
     },

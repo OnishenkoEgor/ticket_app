@@ -16,7 +16,8 @@ class UpdateUserRequest extends FormRequest implements RequestWithDtoInterface
     public function rules(): array
     {
         return [
-            'name' => ['required', 'integer'],
+            'name' => ['required', 'string'],
+            'email' => ['required', 'email']
         ];
     }
 
@@ -27,7 +28,8 @@ class UpdateUserRequest extends FormRequest implements RequestWithDtoInterface
     public function getDto(): UpdateUserDto
     {
         return new UpdateUserDto([
-            'name' => $this->name
+            'name' => $this->name,
+            'email' => $this->email
         ]);
     }
 }

@@ -8,4 +8,5 @@ class CreateUserDto extends DataTransferObject
 {
     public string $name;
     public string $email;
+    public string $password;
 }

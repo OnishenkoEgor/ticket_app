@@ -23,6 +23,8 @@ RUN pecl install rdkafka && \
 
 COPY ./ticket-app /var/www
 COPY ./php/php.ini /usr/local/etc/php/conf.d/php.ini
+COPY ./entrypoints/queue-entrypoint.sh /var/tmp/queue-entrypoint.sh
+COPY ./entrypoints/scheduler-entrypoint.sh /var/tmp/scheduler-entrypoint.sh
 COPY ./entrypoints/entrypoint.sh /var/tmp/entrypoint.sh
 
 WORKDIR /var/www

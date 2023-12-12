@@ -63,7 +63,7 @@ export default {
             })
         },
         create() {
-            this.$router.push({name: 'usersCreate'});
+            this.$router.push({name: 'users.create'});
         }
     },
     created() {

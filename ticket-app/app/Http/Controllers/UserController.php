@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Dao\UserDao;
+use App\Events\User\UserCreatedEvent;
+use App\Events\User\UserDeletedEvent;
+use App\Events\User\UserUpdatedEvent;
 use App\Http\Requests\User\CreateUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\UserResource;
@@ -49,7 +52,10 @@ class UserController extends Controller
     public function create(CreateUserRequest $request): JsonResponse
     {
         try {
-            $this->userDao->create($request->getDto()->toArray());
+            dump($request->getDto());
+            $user = $this->userDao->create($request->getDto()->toArray());
+
+            UserCreatedEvent::dispatch($user);
         } catch (\Throwable $exception) {
             return response()->json([
                 'errors' => $exception->getMessage(),
@@ -65,6 +71,8 @@ class UserController extends Controller
     {
         try {
             $this->userDao->update($userId, $request->getDto()->toArray());
+            $user = $this->userDao->get($userId);
+            UserUpdatedEvent::dispatch($user);
         } catch (\Throwable $exception) {
             return response()->json([
                 'errors' => $exception->getMessage(),
@@ -79,7 +87,9 @@ class UserController extends Controller
     public function delete(int $userId): JsonResponse
     {
         try {
+            $user = $this->userDao->get($userId);
             $this->userDao->delete($userId);
+            UserDeletedEvent::dispatch($user);
         } catch (\Throwable $exception) {
             return response()->json([
                 'errors' => $exception->getMessage(),

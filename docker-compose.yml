@@ -29,8 +29,51 @@ services:
       - db
     entrypoint: /var/tmp/entrypoint.sh
     container_name: app
+    healthcheck:
+      test: curl --fail nginx || exit 1
+      interval: 30s
+      retries: 30
     expose:
       - 9000
+    networks:
+      - app-network
+  app-queue:
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile
+    tty: true
+    environment:
+      - APP_URL=localhost:9000
+      - KAFKA_BROKERS=kafka:9092
+    volumes:
+      - ./ticket-app:/var/www
+      - ./entrypoints/queue-entrypoint.sh:/var/tmp/queue-entrypoint.sh:ro
+      - ./log:/var/log/nginx
+    depends_on:
+      app:
+        condition: service_healthy
+        restart: true
+    entrypoint: /var/tmp/queue-entrypoint.sh
+    container_name: app-queue
+    networks:
+      - app-network
+  app-scheduler:
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile
+    tty: true
+    environment:
+      - APP_URL=localhost:9000
+    volumes:
+      - ./ticket-app:/var/www
+      - ./entrypoints/scheduler-entrypoint.sh:/var/tmp/scheduler-entrypoint.sh:ro
+      - ./log:/var/log/nginx
+    depends_on:
+      app:
+        condition: service_healthy
+        restart: true
+    entrypoint: /var/tmp/scheduler-entrypoint.sh
+    container_name: app-scheduler
     networks:
       - app-network
   app-node:
@@ -71,11 +114,16 @@ services:
     networks:
       - app-network
   kafka:
-    image: bitnami/kafka
+    image: &kafka-image bitnami/kafka
+    container_name: kafka
     ports:
       - "9092:9092"
     volumes:
       - "kafka_data:/bitnami"
+    healthcheck:
+      test: [ "CMD", "kafka-topics.sh", "--bootstrap-server=localhost:9092", "--list" ]
+      start_period: 15s
+      interval: 10s
     environment:
       # KRaft settings
       - KAFKA_CFG_NODE_ID=0
@@ -87,6 +135,42 @@ services:
       - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
       - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+    networks:
+      - app-network
+#  init-kafka:
+#    image: *kafka-image
+#    working_dir: /opt/bitnami/kafka/bin
+#    entrypoint: /bin/bash
+#    depends_on:
+#      kafka:
+#        condition: service_healthy
+#    command: |
+#      kafka-topics.sh --create --if-not-exists --topic foo --replication-factor=1 --partitions=3 --bootstrap-server kafka:9092
+#    networks:
+#      - app-network
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    ports:
+      - "8082:8080"
+    container_name: kafka-ui
+    environment:
+      DYNAMIC_CONFIG_ENABLED: true
+      KAFKA_CLUSTERS_0_NAME: "local"
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: "kafka:9092"
+    networks:
+      - app-network
+  rabbitmq:
+    image: rabbitmq
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    container_name: rabbitmq
+    restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=rmuser
+      - RABBITMQ_DEFAULT_PASS=rmpassword
+    networks:
+      - app-network
 volumes:
   kafka_data:
     driver: local

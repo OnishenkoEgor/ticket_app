@@ -17,7 +17,7 @@ class UserDao
         return User::findOrFail($id);
     }
 
-    public function create(array $data): bool
+    public function create(array $data): User
     {
         return User::create($data);
     }

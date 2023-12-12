@@ -13,5 +13,8 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         (new UsersSeeder())->run();
+        (new CountrySeeder())->run();
+        (new CitySeeder())->run();
+        (new DestinationsSeeder())->run();
     }
 }
